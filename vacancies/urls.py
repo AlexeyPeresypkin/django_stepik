@@ -4,8 +4,8 @@ from vacancies.views import index, vacancies, cat_view, companie_view, vacancie_
 
 urlpatterns = [
     path('', index, name='index'),
-    path('/vacancies', vacancies, name='vacancies'),
-    path('/vacancies/cat/frontend', cat_view, name='cat_view'),
-    path('/companies/345', companie_view, name='companie_view'),
-    path('/vacancies/22', vacancie_view, name='vacancie_view'),
+    path('vacancies', vacancies, name='vacancies'),
+    path('vacancies/cat/frontend', cat_view, name='cat_view'),
+    path('companies.json/345', companie_view, name='companie_view'),
+    path('vacancies/22', vacancie_view, name='vacancie_view'),
 ]

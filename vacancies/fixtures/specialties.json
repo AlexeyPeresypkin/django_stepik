@@ -1,0 +1,66 @@
+[
+  {
+    "model": "vacancies.Specialty",
+    "pk": 1,
+    "fields": {
+      "code": "frontend",
+      "title": "Фронтенд"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 2,
+    "fields": {
+      "code": "backend",
+      "title": "Бэкенд"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 3,
+    "fields": {
+      "code": "gamedev",
+      "title": "Геймдев"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 4,
+    "fields": {
+      "code": "devops",
+      "title": "Девопс"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 5,
+    "fields": {
+      "code": "design",
+      "title": "Дизайн"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 6,
+    "fields": {
+      "code": "products",
+      "title": "Продукты"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 7,
+    "fields": {
+      "code": "management",
+      "title": "Менеджмент"
+    }
+  },
+  {
+    "model": "vacancies.Specialty",
+    "pk": 8,
+    "fields": {
+      "code": "testing",
+      "title": "Тестирование"
+    }
+  }
+]

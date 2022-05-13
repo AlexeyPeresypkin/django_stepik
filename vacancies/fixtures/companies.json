@@ -1,0 +1,91 @@
+[
+  {
+    "model": "vacancies.Company",
+    "pk": 1,
+    "fields": {
+      "name": "workiro",
+      "logo": "logo1.png",
+      "employee_count": "10",
+      "location": "Новосибирск",
+      "description": "Разрабатываем мобильные приложения и сервисы для сферы онлайн-обучения."
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 2,
+    "fields": {
+      "name": "rebelrage",
+      "logo": "logo2.png",
+      "employee_count": "24",
+      "location": "Москва",
+      "description": "Мобильные сервисы, программное обеспечение, веб-сайты, мобильные приложения."
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 3,
+    "fields": {
+      "name": "staffingsmarter",
+      "logo": "logo3.png",
+      "employee_count": "123",
+      "location": "Москва",
+      "description": "Сервис онлайн-наблюдения за процессом сдачи экзамена с искусственным интеллектом"
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 4,
+    "fields": {
+      "name": "evilthreath",
+      "logo": "logo4.png",
+      "employee_count": "36",
+      "location": "Москва",
+      "description": "Лидирующее в России и Восточной Европе ПО для проведения вебинаров и видео-конференций."
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 5,
+    "fields": {
+      "name": "hirey",
+      "logo": "logo5.png",
+      "employee_count": "21",
+      "location": "Воронеж",
+      "description": "Телекоммуникационные и платежные сервисы, которые помогают развиваться бизнесам во всем мире."
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 6,
+    "fields": {
+      "name": "swiftattack",
+      "logo": "logo6.png",
+      "employee_count": "79",
+      "location": "Москва",
+      "description": "Разработка сложных веб-сервисов и мобильных приложений"
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 7,
+    "fields": {
+      "name": "troller",
+      "logo": "logo7.png",
+      "employee_count": "230",
+      "location": "Санкт-Петербург",
+      "description": "Мобильное приложение, позволяющее примерить обувь и выбрать идеальную пару всего в 3 клика"
+    }
+  },
+  {
+    "model": "vacancies.Company",
+    "pk": 8,
+    "fields": {
+      "name": "primalassault",
+      "logo": "logo8.png",
+      "employee_count": "13",
+      "location": "Москва",
+      "description": "Реализуем проекты любой сложности в digital-сфере"
+    }
+  }
+]
+
