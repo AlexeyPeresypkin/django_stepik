@@ -1,14 +1,24 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.generic import ListView
+
+from vacancies.models import Vacancy, Specialty, Company
 
 
-# Create your views here.
-def index(request):
-    return HttpResponse("index.")
+class IndexView(ListView):
+    model = Company
+    template_name = 'index.html'
+    context_object_name = 'companies'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['specialties'] = Specialty.objects.all()
+        return context
 
 
-def vacancies(request):
-    return HttpResponse("vacancies.")
+class VacancyListView(ListView):
+    model = Vacancy
+    template_name = 'vacancies.html'
 
 
 def cat_view(request):
