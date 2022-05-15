@@ -19,6 +19,10 @@ class IndexView(ListView):
 class VacancyListView(ListView):
     model = Vacancy
     template_name = 'vacancies.html'
+    context_object_name = 'vacancies'
+    queryset = Vacancy.objects. \
+        select_related('specialty'). \
+        select_related('company')
 
 
 def cat_view(request):
@@ -27,7 +31,6 @@ def cat_view(request):
 
 def companie_view(request):
     return HttpResponse("companie_view.")
-
 
 
 def vacancie_view(request):
