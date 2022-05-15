@@ -43,11 +43,16 @@
                 <div class="col-6 col-md-6 col-lg-3">
                     <div class="card pt-4 text-center mb-4">
                         <img class="mx-auto d-block" src="
+
+
                                 {% static 'specialties/' %}{{ specialty.picture }}"
                              width="80" height="80" alt="">
                         <div class="card-body">
                             <p class="card-text mb-2">{{ specialty.title }}</p>
-                            <p class="card-text"><a href="#">5 вакансий</a></p>
+                            <p class="card-text">
+                                <a href="{% url 'vacancies:vacancy_by_specialty' specialty.code %}">
+                                {{ specialty.vacancies.count }}
+                                вакансий</a></p>
                         </div>
                     </div>
                 </div>
@@ -68,7 +73,9 @@
                                  src="{% static company.logo %}" alt="">
                         </a>
                         <div class="card-body">
-                            <p class="card-text"><a href="#">5 вакансий</a></p>
+                            <p class="card-text"><a
+                                    href="#">{{ company.vacancies.count }}
+                                вакансий</a></p>
                         </div>
                     </div>
                 </div>
