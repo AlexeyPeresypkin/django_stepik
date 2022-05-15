@@ -19,11 +19,18 @@ from django.urls import path, include
 
 from src import settings
 
+handler404 = "vacancies.views.page_not_found"  # noqa
+handler500 = "vacancies.views.server_error"  # noqa
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
     path('', include(('vacancies.urls', 'vacancies'))),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += (path("__debug__/", include(debug_toolbar.urls)),)
 
 # if settings.DEBUG:
 #     # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

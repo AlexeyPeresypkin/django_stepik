@@ -1,7 +1,12 @@
 from django.urls import path
 
-from vacancies.views import VacancyView, IndexView, VacancyListView, \
-    VacancyBySpecialtyListView, CompanyView
+from vacancies.views import (
+    VacancyView,
+    IndexView,
+    VacancyListView,
+    VacancyBySpecialtyListView,
+    CompanyView
+)
 
 urlpatterns = [
     path(
