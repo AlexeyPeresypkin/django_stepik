@@ -1,7 +1,7 @@
 from django.urls import path
 
-from vacancies.views import companie_view, \
-    vacancie_view, IndexView, VacancyListView, VacancyBySpecialtyListView
+from vacancies.views import VacancyView, IndexView, VacancyListView, \
+    VacancyBySpecialtyListView, CompanyView
 
 urlpatterns = [
     path(
@@ -19,13 +19,13 @@ urlpatterns = [
         name='vacancy_by_specialty'
     ),
     path(
-        'companies.json/345',
-        companie_view,
-        name='companie_view'
+        'companies/<int:pk>',
+        CompanyView.as_view(),
+        name='company_view'
     ),
     path(
-        'vacancies/22',
-        vacancie_view,
-        name='vacancie_view'
+        'vacancies/<int:pk>',
+        VacancyView.as_view(),
+        name='vacancy_view'
     ),
 ]

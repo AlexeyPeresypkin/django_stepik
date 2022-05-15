@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from vacancies.models import Vacancy, Specialty, Company
 
@@ -24,13 +24,12 @@ class VacancyListView(ListView):
     queryset = Vacancy.objects. \
         select_related('specialty'). \
         select_related('company')
-    extra_context = {'title': 'Все вакансии'}
+    extra_context = {'header': 'Все вакансии'}
 
 
 class VacancyBySpecialtyListView(ListView):
     template_name = 'vacancies.html'
     context_object_name = 'vacancies'
-    # extra_context = self.get_specialty()
 
     def get_queryset(self):
         self.specialty = get_object_or_404(Specialty,
@@ -39,14 +38,20 @@ class VacancyBySpecialtyListView(ListView):
             select_related('specialty'). \
             select_related('company')
 
-    def get_specialty(self):
-        return {'specialty': get_object_or_404(Specialty,
-                                           code=self.kwargs['specialty'])}
+
+class CompanyView(DetailView):
+    template_name = 'company.html'
+    context_object_name = 'company'
+    queryset = Company.objects. \
+        prefetch_related('vacancies')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = Company.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
-def companie_view(request):
-    return HttpResponse("companie_view.")
-
-
-def vacancie_view(request):
-    return HttpResponse("vacancie_view.")
+class VacancyView(DetailView):
+    model = Vacancy
+    template_name = 'vacancy.html'
+    context_object_name = 'vacancy'

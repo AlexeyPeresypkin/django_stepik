@@ -67,14 +67,14 @@
             {% for company in companies %}
                 <div class="col-6 col-md-6 col-lg-3">
                     <div class="card pt-4 text-center mb-4">
-                        <a href="#" style="max-width: 150px;"
+                        <a href="{% url 'vacancies:company_view' company.pk %}" style="max-width: 150px;"
                            class="mx-auto d-block">
                             <img class="mx-auto d-block mw-100"
                                  src="{% static company.logo %}" alt="">
                         </a>
                         <div class="card-body">
                             <p class="card-text"><a
-                                    href="#">{{ company.vacancies.count }}
+                                    href="{% url 'vacancies:company_view' company.pk %}">{{ company.vacancies.count }}
                                 вакансий</a></p>
                         </div>
                     </div>
