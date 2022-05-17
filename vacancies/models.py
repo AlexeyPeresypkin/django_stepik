@@ -1,6 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
+
+from src.settings import MEDIA_COMPANY_IMAGE_DIR, MEDIA_SPECIALITY_IMAGE_DIR
+
+User = get_user_model()
 
 
 class Company(models.Model):
@@ -12,8 +17,8 @@ class Company(models.Model):
         max_length=255,
         verbose_name='Город'
     )
-    logo = models.CharField(
-        max_length=255,
+    logo = models.ImageField(
+        upload_to=MEDIA_COMPANY_IMAGE_DIR,
         verbose_name='Логотипчик',
         blank=True
     )
@@ -24,6 +29,15 @@ class Company(models.Model):
     employee_count = models.SmallIntegerField(
         validators=[MinValueValidator(1)],
         verbose_name='Количество сотрудников',
+    )
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Владелец',
+        related_name='owners',
+        blank=True,
+        null=True,
+        default=None
     )
 
     def __str__(self):
@@ -46,8 +60,8 @@ class Specialty(models.Model):
         max_length=255,
         verbose_name='Название'
     )
-    picture = models.CharField(
-        max_length=255,
+    picture = models.ImageField(
+        upload_to=MEDIA_SPECIALITY_IMAGE_DIR,
         verbose_name='Картинка',
         blank=True
     )
@@ -111,3 +125,29 @@ class Vacancy(models.Model):
     class Meta:
         verbose_name = 'Вакансия'
         verbose_name_plural = 'Вакансии'
+
+
+class Application(models.Model):
+    written_username = models.CharField(
+        max_length=255,
+        verbose_name='Имя'
+    )
+    written_phone = models.CharField(
+        max_length=128,
+        verbose_name='Телефон'
+    )
+    written_cover_letter = models.TextField(
+        verbose_name='Сопроводительное письмо'
+    )
+    vacancy = models.ForeignKey(
+        Vacancy,
+        related_name='applications',
+        on_delete=models.CASCADE,
+        verbose_name='Вакансия'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='applications',
+        verbose_name='Пользователь'
+    )
