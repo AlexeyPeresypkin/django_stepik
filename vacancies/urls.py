@@ -5,7 +5,11 @@ from vacancies.views import (
     IndexView,
     VacancyListView,
     VacancyBySpecialtyListView,
-    CompanyView
+    CompanyView,
+    my_company_view,
+    MyCompanyVacanciesView,
+    MyCompanyVacancyView,
+    VacancySendView
 )
 
 urlpatterns = [
@@ -33,4 +37,25 @@ urlpatterns = [
         VacancyView.as_view(),
         name='vacancy_view'
     ),
+    path(
+        'vacancies/<int:pk>/send',
+        VacancySendView.as_view(),
+        name='vacancy_send_view'
+    ),
+    path(
+        'mycompany',
+        my_company_view,
+        name='my_company_view'
+    ),
+    path(
+        'mycompany/vacancies',
+        MyCompanyVacanciesView.as_view(),
+        name='my_company_vacancies_view'
+    ),
+    path(
+        'mycompany/vacancies/<int:pk>',
+        MyCompanyVacancyView.as_view(),
+        name='my_company_vacancy_detail_view'
+    ),
+
 ]

@@ -151,3 +151,13 @@ class Application(models.Model):
         related_name='applications',
         verbose_name='Пользователь'
     )
+
+    def __str__(self):
+        return self.written_username
+
+    # def get_absolute_url(self):
+    #     return reverse('vacancies:vacancy', kwargs={'pk': self.pk})
+
+    class Meta:
+        verbose_name = 'Отклик'
+        verbose_name_plural = 'Отклики'

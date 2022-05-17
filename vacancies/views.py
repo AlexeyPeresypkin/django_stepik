@@ -57,6 +57,23 @@ class VacancyView(DetailView):
     context_object_name = 'vacancy'
 
 
+class VacancySendView(DetailView):
+    model = Vacancy
+    template_name = 'sent.html'
+
+
+def my_company_view(request):
+    return render(request, 'company_from_account.html')
+
+
+class MyCompanyVacanciesView(ListView):
+    model = Vacancy
+
+
+class MyCompanyVacancyView(DetailView):
+    model = Vacancy
+
+
 def page_not_found(request, exception):
     # Переменная exception содержит отладочную информацию,
     # выводить её в шаблон пользователской страницы 404 мы не станем
