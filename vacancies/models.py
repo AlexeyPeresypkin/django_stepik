@@ -28,11 +28,11 @@ class Company(models.Model):
         validators=[MinValueValidator(1)],
         verbose_name='Количество сотрудников',
     )
-    owner = models.ForeignKey(
+    owner = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         verbose_name='Владелец',
-        related_name='owners',
+        related_name='owner',
         blank=True,
         null=True,
         default=None

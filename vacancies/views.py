@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from vacancies.forms import CompanyForm
 from vacancies.models import Vacancy, Specialty, Company
@@ -77,8 +78,16 @@ class VacancySendView(DetailView):
     template_name = 'sent.html'
 
 
-def my_company_view(request):
-    return render(request, 'company_from_account.html')
+class CompanyEditView(View):
+
+    def get(self, request, *args, **kwargs):
+        company = Company.objects.filter(owner=request.user).values()[0]
+        form = CompanyForm(company)
+        print(company)
+        print(form.is_bound)
+        print(form.is_valid())
+        print(form.instance.name)
+        return render(request, 'company-edit.html', {'form': form})
 
 
 class MyCompanyVacanciesView(ListView):
