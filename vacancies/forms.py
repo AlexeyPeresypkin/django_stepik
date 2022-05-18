@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from vacancies.models import Company
 
 
-class RecipeForm(ModelForm):
+class CompanyForm(ModelForm):
     class Meta:
         model = Company
         fields = ['name',
@@ -14,6 +14,3 @@ class RecipeForm(ModelForm):
                   'description',
                   'employee_count',
                   ]
-        widgets = {
-            'tags': forms.CheckboxSelectMultiple(),
-        }

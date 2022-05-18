@@ -20,11 +20,9 @@ class Company(models.Model):
     logo = models.ImageField(
         upload_to=MEDIA_COMPANY_IMAGE_DIR,
         verbose_name='Логотипчик',
-        blank=True
     )
     description = models.TextField(
         verbose_name='Информация о компании',
-        blank=True
     )
     employee_count = models.SmallIntegerField(
         validators=[MinValueValidator(1)],
@@ -63,7 +61,6 @@ class Specialty(models.Model):
     picture = models.ImageField(
         upload_to=MEDIA_SPECIALITY_IMAGE_DIR,
         verbose_name='Картинка',
-        blank=True
     )
 
     def __str__(self):

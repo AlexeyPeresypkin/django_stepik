@@ -9,7 +9,8 @@ from vacancies.views import (
     my_company_view,
     MyCompanyVacanciesView,
     MyCompanyVacancyView,
-    VacancySendView
+    VacancySendView,
+    CompanyCreateView
 )
 
 urlpatterns = [
@@ -26,6 +27,11 @@ urlpatterns = [
         'vacancies/cat/<specialty>',
         VacancyBySpecialtyListView.as_view(),
         name='vacancy_by_specialty'
+    ),
+    path(
+        'company/create',
+        CompanyCreateView.as_view(),
+        name='company_create_view'
     ),
     path(
         'companies/<int:pk>',

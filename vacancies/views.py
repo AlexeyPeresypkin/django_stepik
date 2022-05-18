@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
+from vacancies.forms import CompanyForm
 from vacancies.models import Vacancy, Specialty, Company
 
 
@@ -49,6 +51,19 @@ class CompanyView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = Company.objects.get(pk=self.kwargs['pk'])
         return context
+
+
+class CompanyCreateView(CreateView):
+    model = Company
+    template_name = 'company-create.html'
+    form_class = CompanyForm
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('vacancies:my_company_view')
 
 
 class VacancyView(DetailView):
