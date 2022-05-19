@@ -24,6 +24,8 @@
                                    type="text" maxlength="255"
                                     {% if form.is_bound %}
                                    value="{{ form.name.value }}"
+                                   {% elif form.instance %}
+                                   value="{{ form.instance.name }}"
                                     {% endif %}
                                    id="id_name">
                         </div>
@@ -34,9 +36,16 @@
                                    for="id_logo">Логотип</label>
                             <div class="row align-items-center">
                                 <div class="col-6">
-                                    <img src="https://place-hold.it/120x40"
+                                    {% if form.instance.logo %}
+                                        <img src="{{ form.instance.logo.url }}"
                                          alt=""
                                          style="max-width: 120px;height: auto;">
+                                        {% else %}
+                                        <img src="https://place-hold.it/120x40"
+                                         alt=""
+                                         style="max-width: 120px;height: auto;">
+                                    {% endif %}
+
                                 </div>
                                 <div class="col-6"
                                      style="position: relative;">
@@ -67,6 +76,8 @@
                                    class="form-control" type="text"
                                     {% if form.is_bound %}
                                    value="{{ form.employee_count.value }}"
+                                   {% elif form.instance.employee_count %}
+                                   value="{{ form.instance.employee_count }}"
                                     {% endif %}
                                    id="id_employee_count">
                         </div>
@@ -79,6 +90,8 @@
                                    name="location" type="text"
                                     {% if form.is_bound %}
                                    value="{{ form.location.value }}"
+                                   {% elif form.instance.location %}
+                                   value="{{ form.instance.location }}"
                                     {% endif %}
                                    id="id_location"
                                    maxlength="255" required>
@@ -91,7 +104,7 @@
                     <textarea name="description"
                               id="id_description"
                               class="form-control" rows="4"
-                              id="companyInfo" style="color:#000;">{% if form.is_bound %}{{ form.description.value }}{% endif %}</textarea>
+                              id="companyInfo" style="color:#000;">{% if form.is_bound %}{{ form.description.value }}{% elif form.instance.description %}{{ form.instance.description }}{% endif %}</textarea>
                 </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-info"

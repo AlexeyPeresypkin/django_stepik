@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -54,7 +55,7 @@ class CompanyView(DetailView):
         return context
 
 
-class CompanyCreateView(CreateView):
+class CompanyCreateView(LoginRequiredMixin, CreateView):
     model = Company
     template_name = 'company-create.html'
     form_class = CompanyForm
@@ -78,15 +79,25 @@ class VacancySendView(DetailView):
     template_name = 'sent.html'
 
 
-class CompanyEditView(View):
+class CompanyEditView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        company = Company.objects.filter(owner=request.user).values()[0]
-        form = CompanyForm(company)
-        print(company)
-        print(form.is_bound)
-        print(form.is_valid())
-        print(form.instance.name)
+        company = Company.objects.filter(owner=request.user).first()
+        if company:
+            form = CompanyForm(instance=company)
+        else:
+            form = CompanyForm()
+        return render(request, 'company-edit.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        company = Company.objects.filter(owner=request.user).first()
+        form = CompanyForm(
+            request.POST or None,
+            request.FILES or None,
+            instance=company
+        )
+        if form.is_valid():
+            form.save()
         return render(request, 'company-edit.html', {'form': form})
 
 
