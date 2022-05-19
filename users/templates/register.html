@@ -1,47 +1,84 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ form.as_p }}
     <div class="row">
         <div class="col-8 col-lg-4 offset-2 offset-lg-4">
-            <form class="form-signin pt-5" enctype="multipart/form-data">
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="alert alert-danger"
+                           role="alert">{{ error|escape }}</p>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            <form class="form-signin pt-5" method="post">
+                {% csrf_token %}
                 <div class="text-center mt-5 b-1">
-
                     <h1 class="h3 mb-3 font-weight-normal">Джуманджи</h1>
                     <p class="h5 font-weight-light">Создайте аккаунт</p>
                 </div>
+
                 <div class="mt-5 form-label-group">
                     <p class="text-muted">Логин</p>
-                    <input type="text" id="inputLogin" class="form-control"
-                           required autofocus>
-                    <label for="inputLogin"></label>
-                </div>
-
-                <div class=" form-label-group">
-                    <p class="text-muted">Имя</p>
-                    <input type="text"  id="inputName" class="form-control"
-                           required>
-                    <label for="inputName"></label>
-                </div>
-
-                <div class=" form-label-group">
-                    <p class="text-muted">Фамилия</p>
-                    <input type="text" id="inputSurname" class="form-control"
-                           required>
-                    <label for="inputSurname"></label>
+                    <input type="text" name="username" id="id_username"
+                           class="form-control"
+                           required autofocus
+                            {% if form.is_bound %}
+                           value="{{ form.username.value }}"
+                            {% endif %}>
+                    <label for="id_username"></label>
                 </div>
 
                 <div class="form-label-group">
-                    <p class="text-muted"> Пароль</p>
-                    <input type="password" id="inputPassword"
-                           class="form-control" required>
-                    <label for="inputPassword"></label>
+                    <p class="text-muted">Имя</p>
+                    <input name="first_name" type="text" id="id_first_name"
+                           class="form-control" required
+                            {% if form.is_bound %}
+                           value="{{ form.first_name.value }}"
+                            {% endif %}>
+                    <label for="id_first_name"></label>
                 </div>
+
+                <div class="form-label-group">
+                    <p class="text-muted">Фамилия</p>
+                    <input type="text" name="last_name" id="id_last_name"
+                           class="form-control" required
+                            {% if form.is_bound %}
+                           value="{{ form.last_name.value }}"
+                            {% endif %}>
+                    <label for="id_last_name"></label>
+                </div>
+
+                <div class="form-label-group">
+                    <p class="text-muted">Почта</p>
+                    <input type="email" name="email" id="id_email"
+                           class="form-control"
+                            {% if form.is_bound %}
+                           value="{{ form.email.value }}"
+                            {% endif %}>
+                    <label for="id_email"></label>
+                </div>
+
+                <div class="form-label-group">
+                    <p class="text-muted">Пароль</p>
+                    <input type="password" name="password1" id="id_password1"
+                           class="form-control" required>
+                    <label for="id_password1"></label>
+                </div>
+
+                <div class="form-label-group">
+                    <p class="text-muted"> Подтвердите пароль</p>
+                    <input type="password" name="password2" id="id_password2"
+                           class="form-control" required>
+                    <label for="id_password2"></label>
+                </div>
+
                 <div class="checkbox mb-3"></div>
                 <button class="btn btn-primary btn-lg btn-block" type="submit">
                     Зарегистрироваться
                 </button>
             </form>
-            <div class="mt-4 text-center"><p>Есть аккаунт? <a href="{% url 'login' %}">Войдите!</a>
+            <div class="mt-4 text-center"><p>Есть аккаунт? <a
+                    href="{% url 'login' %}">Войдите!</a>
             </p></div>
         </div>
     </div>
