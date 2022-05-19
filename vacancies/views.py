@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from vacancies.forms import CompanyForm
-from vacancies.models import Vacancy, Specialty, Company
+from vacancies.models import Vacancy, Specialty, Company, Application
 
 
 class IndexView(ListView):
@@ -74,9 +74,27 @@ class VacancyView(DetailView):
     context_object_name = 'vacancy'
 
 
-class VacancySendView(DetailView):
-    model = Vacancy
-    template_name = 'sent.html'
+class DataView(View):
+
+    def post(self, request, *args, **kwargs):
+        print(args)
+        print(kwargs)
+        return render(request, 'index.html')
+
+
+class VacancySendView(CreateView):
+    model = Application
+    template_name = 'vacancy.html'
+    form_class = 'ApplicationForm'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get(pk))
+        print(form.instance.vacancy)
+        return super().form_valid(form)
+
+    # def get_success_url(self):
+        # return reverse_lazy('recipe_detail', kwargs={'pk': self.object.pk})
 
 
 class CompanyEditView(LoginRequiredMixin, View):
@@ -87,7 +105,11 @@ class CompanyEditView(LoginRequiredMixin, View):
             form = CompanyForm(instance=company)
         else:
             form = CompanyForm()
-        return render(request, 'company-edit.html', {'form': form})
+        return render(
+            request,
+            'company-edit.html',
+            {'form': form, 'company': company}
+        )
 
     def post(self, request, *args, **kwargs):
         company = Company.objects.filter(owner=request.user).first()

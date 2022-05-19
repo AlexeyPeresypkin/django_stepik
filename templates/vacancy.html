@@ -20,12 +20,14 @@
           <div style="line-height: 1.8;">
               {{vacancy.description|safe}}
           </div>
-          <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">
+          <form method="post" action="{% url 'vacancies:vacancy_send_view' vacancy.pk %}" class="card mt-4 mb-3">
+              {% csrf_token %}
+              {{ form.as_p }}
             <div class="card-body mx-3">
               <p class="h5 mt-3 font-weight-normal">Отозваться на вакансию</p>
               <div class="form-group">
-                <label class="mb-1 mt-2" for="userName">Вас зовут</label>
-                <input class="form-control" type="text" placeholder="" id="userName">
+                <label class="mb-1 mt-2" for="id_written_username">Вас зовут</label>
+                <input name="written_username" class="form-control" type="text" placeholder="" id="id_written_username">
               </div>
               <div class="form-group">
                 <label class="mb-1" for="userPhone">Ваш телефон</label>
