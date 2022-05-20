@@ -45,11 +45,11 @@ urlpatterns = [
         VacancyView.as_view(),
         name='vacancy_view'
     ),
-    path(
-        'vacancies/<int:pk>/send',
-        VacancySendView.as_view(),
-        name='vacancy_send_view'
-    ),
+    # path(
+    #     'vacancies/<int:pk>/send',
+    #     VacancySendView.as_view(),
+    #     name='vacancy_send_view'
+    # ),
     path(
         'mycompany',
         CompanyEditView.as_view(),

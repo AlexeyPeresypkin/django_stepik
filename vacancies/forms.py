@@ -23,3 +23,16 @@ class ApplicationForm(ModelForm):
             'written_phone',
             'written_cover_letter',
         ]
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        self.vacancy = kwargs.pop('vacancy')
+        super(ApplicationForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(ApplicationForm, self).save(commit=False)
+        instance.vacancy = self.vacancy
+        instance.user = self.user
+        if commit:
+            instance.save()
+        return instance

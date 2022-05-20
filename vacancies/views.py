@@ -38,9 +38,9 @@ class VacancyBySpecialtyListView(ListView):
     context_object_name = 'vacancies'
 
     def get_queryset(self):
-        self.specialty = get_object_or_404(Specialty,
-                                           code=self.kwargs['specialty'])
-        return Vacancy.objects.filter(specialty=self.specialty). \
+        specialty = get_object_or_404(Specialty,
+                                      code=self.kwargs['specialty'])
+        return Vacancy.objects.filter(specialty=specialty). \
             select_related('specialty'). \
             select_related('company')
 
@@ -83,20 +83,18 @@ class VacancyView(View):
         return render(request, 'vacancy.html', {'vacancy': vacancy})
 
     def post(self, request, *args, **kwargs):
-        form = ApplicationForm(request.POST)
         pk = self.kwargs.get('pk')
         vacancy = get_object_or_404(Vacancy, pk=pk)
         user = self.request.user
+        form = ApplicationForm(request.POST, vacancy=vacancy, user=user)
         if not user.is_authenticated:
             messages.info(request, 'Необходимо войти чтобы отправить отклик')
             return redirect('login')
         if form.is_valid():
-            application = form.save(commit=False)
-            application.user = user
-            application.vacancy = vacancy
-            application.save()
-            return reverse('vacancies:vacancy_send_view', kwargs={'pk': pk})
+            form.save()
+            return render(request, 'sent.html', {'vacancy': vacancy})
         return render(request, 'vacancy.html', {'form': form})
+
 
 # class DataView(LoginRequiredMixin, View):
 #
