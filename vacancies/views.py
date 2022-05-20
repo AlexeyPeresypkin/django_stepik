@@ -7,7 +7,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
-from vacancies.forms import CompanyForm, ApplicationForm
+from vacancies.forms import CompanyForm, ApplicationForm, VacancyForm
 from vacancies.models import Vacancy, Specialty, Company, Application
 
 
@@ -70,12 +70,6 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('vacancies:my_company_view')
 
 
-# class VacancyView(DetailView):
-#     model = Vacancy
-#     template_name = 'vacancy.html'
-#     context_object_name = 'vacancy'
-
-
 class VacancyView(View):
 
     def get(self, request, *args, **kwargs):
@@ -94,19 +88,6 @@ class VacancyView(View):
             form.save()
             return render(request, 'sent.html', {'vacancy': vacancy})
         return render(request, 'vacancy.html', {'form': form})
-
-
-# class DataView(LoginRequiredMixin, View):
-#
-#     @login_required
-#     def post(self, request, *args, **kwargs):
-#         form = ApplicationForm(request.POST)
-#         vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
-#         user = self.request.user
-#         form.user = user
-#         form.vacancy = vacancy
-#         print(form.is_valid())
-#         return render(request, 'index.html')
 
 
 class VacancySendView(DetailView):
@@ -141,12 +122,39 @@ class CompanyEditView(LoginRequiredMixin, View):
         return render(request, 'company-edit.html', {'form': form})
 
 
-class MyCompanyVacanciesView(ListView):
-    model = Vacancy
+class MyCompanyVacanciesView(LoginRequiredMixin, ListView):
+    template_name = 'vacancy-list.html'
+    context_object_name = 'vacancies'
+
+    def get_queryset(self):
+        queryset = Vacancy.objects. \
+            filter(company=self.request.user.owner). \
+            prefetch_related('applications')
+        return queryset
 
 
-class MyCompanyVacancyView(DetailView):
-    model = Vacancy
+class MyCompanyVacancyView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
+        form = VacancyForm(instance=vacancy)
+        applications = vacancy.applications
+        return render(
+            request,
+            'vacancy-edit.html',
+            {'form': form, 'applications': applications}
+        )
+
+    # def post(self, request, *args, **kwargs):
+    #     company = Company.objects.filter(owner=request.user).first()
+    #     form = CompanyForm(
+    #         request.POST or None,
+    #         request.FILES or None,
+    #         instance=company
+    #     )
+    #     if form.is_valid():
+    #         form.save()
+    #     return render(request, 'company-edit.html', {'form': form})
 
 
 def page_not_found(request, exception):

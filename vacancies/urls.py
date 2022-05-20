@@ -63,7 +63,7 @@ urlpatterns = [
     path(
         'mycompany/vacancies/<int:pk>',
         MyCompanyVacancyView.as_view(),
-        name='my_company_vacancy_detail_view'
+        name='vacancy_view_from_account'
     ),
 
 ]

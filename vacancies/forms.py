@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from vacancies.models import Company, Application
+from vacancies.models import Company, Application, Vacancy
 
 
 class CompanyForm(ModelForm):
@@ -36,3 +36,16 @@ class ApplicationForm(ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class VacancyForm(ModelForm):
+    class Meta:
+        model = Vacancy
+        fields = [
+            'title',
+            'specialty',
+            'skills',
+            'description',
+            'salary_min',
+            'salary_max',
+        ]
