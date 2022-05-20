@@ -1,11 +1,13 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
-from vacancies.forms import CompanyForm
+from vacancies.forms import CompanyForm, ApplicationForm
 from vacancies.models import Vacancy, Specialty, Company, Application
 
 
@@ -68,33 +70,51 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('vacancies:my_company_view')
 
 
-class VacancyView(DetailView):
-    model = Vacancy
-    template_name = 'vacancy.html'
-    context_object_name = 'vacancy'
+# class VacancyView(DetailView):
+#     model = Vacancy
+#     template_name = 'vacancy.html'
+#     context_object_name = 'vacancy'
 
 
-class DataView(View):
+class VacancyView(View):
+
+    def get(self, request, *args, **kwargs):
+        vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
+        return render(request, 'vacancy.html', {'vacancy': vacancy})
 
     def post(self, request, *args, **kwargs):
-        print(args)
-        print(kwargs)
-        return render(request, 'index.html')
+        form = ApplicationForm(request.POST)
+        pk = self.kwargs.get('pk')
+        vacancy = get_object_or_404(Vacancy, pk=pk)
+        user = self.request.user
+        if not user.is_authenticated:
+            messages.info(request, 'Необходимо войти чтобы отправить отклик')
+            return redirect('login')
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.user = user
+            application.vacancy = vacancy
+            application.save()
+            return reverse('vacancies:vacancy_send_view', kwargs={'pk': pk})
+        return render(request, 'vacancy.html', {'form': form})
+
+# class DataView(LoginRequiredMixin, View):
+#
+#     @login_required
+#     def post(self, request, *args, **kwargs):
+#         form = ApplicationForm(request.POST)
+#         vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
+#         user = self.request.user
+#         form.user = user
+#         form.vacancy = vacancy
+#         print(form.is_valid())
+#         return render(request, 'index.html')
 
 
-class VacancySendView(CreateView):
-    model = Application
-    template_name = 'vacancy.html'
-    form_class = 'ApplicationForm'
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get(pk))
-        print(form.instance.vacancy)
-        return super().form_valid(form)
-
-    # def get_success_url(self):
-        # return reverse_lazy('recipe_detail', kwargs={'pk': self.object.pk})
+class VacancySendView(DetailView):
+    model = Vacancy
+    template_name = 'sent.html'
+    context_object_name = 'vacancy'
 
 
 class CompanyEditView(LoginRequiredMixin, View):
