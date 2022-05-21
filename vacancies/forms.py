@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 
 from vacancies.models import Company, Application, Vacancy
@@ -49,3 +50,8 @@ class VacancyForm(ModelForm):
             'salary_min',
             'salary_max',
         ]
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['specialty'].widget.attrs.update(
+                {'class': 'custom-select mr-sm-2 form-group pb-2'})

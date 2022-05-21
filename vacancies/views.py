@@ -139,6 +139,7 @@ class MyCompanyVacancyView(LoginRequiredMixin, View):
         vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
         form = VacancyForm(instance=vacancy)
         applications = vacancy.applications
+        # print(form)
         return render(
             request,
             'vacancy-edit.html',
