@@ -32,7 +32,7 @@ class Company(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Владелец',
-        related_name='owner',
+        related_name='company',
         blank=True,
         null=True,
         default=None

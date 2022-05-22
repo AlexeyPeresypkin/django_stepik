@@ -45,6 +45,19 @@ class VacancyBySpecialtyListView(ListView):
             select_related('company')
 
 
+class VacancyCreateView(LoginRequiredMixin, CreateView):
+    model = Vacancy
+    form_class = VacancyForm
+    template_name = 'vacancy-create.html'
+
+    def form_valid(self, form):
+        form.instance.company = self.request.user.company
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('vacancies:my_company_vacancies_view')
+
+
 class CompanyView(DetailView):
     template_name = 'company.html'
     context_object_name = 'company'
@@ -119,7 +132,15 @@ class CompanyEditView(LoginRequiredMixin, View):
         )
         if form.is_valid():
             form.save()
-        return render(request, 'company-edit.html', {'form': form})
+        return render(
+            request,
+            'company-edit.html',
+            {
+                'form': form,
+                'message': 'Информация о компании обновлена',
+                'company': company,
+            }
+        )
 
 
 class MyCompanyVacanciesView(LoginRequiredMixin, ListView):
@@ -128,7 +149,7 @@ class MyCompanyVacanciesView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = Vacancy.objects. \
-            filter(company=self.request.user.owner). \
+            filter(company=self.request.user.company). \
             prefetch_related('applications')
         return queryset
 
@@ -143,19 +164,39 @@ class MyCompanyVacancyView(LoginRequiredMixin, View):
         return render(
             request,
             'vacancy-edit.html',
-            {'form': form, 'applications': applications}
+            {
+                'form': form,
+                'applications': applications,
+                'vacancy': vacancy
+            }
         )
 
-    # def post(self, request, *args, **kwargs):
-    #     company = Company.objects.filter(owner=request.user).first()
-    #     form = CompanyForm(
-    #         request.POST or None,
-    #         request.FILES or None,
-    #         instance=company
-    #     )
-    #     if form.is_valid():
-    #         form.save()
-    #     return render(request, 'company-edit.html', {'form': form})
+    def post(self, request, *args, **kwargs):
+        vacancy = get_object_or_404(Vacancy, pk=kwargs.get('pk'))
+        if vacancy.company.owner != request.user:
+            return redirect('vacancies:my_company_view')
+        form = VacancyForm(request.POST or None, instance=vacancy)
+        if form.is_valid():
+            form.save()
+        return render(
+            request,
+            'vacancy-edit.html',
+            {
+                'form': form,
+                'message': 'Вакансия обновлена'
+            }
+        )
+
+
+class ApplicationsView(ListView):
+    model = Application
+    template_name = 'applications.html'
+    context_object_name = 'applications'
+
+    def get_queryset(self):
+        applications = Application.objects.\
+            filter(vacancy_id=self.kwargs.get('pk'))
+        return applications
 
 
 def page_not_found(request, exception):

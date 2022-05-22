@@ -12,6 +12,8 @@ from vacancies.views import (
     VacancySendView,
     CompanyCreateView,
     CompanyEditView,
+    ApplicationsView,
+    VacancyCreateView,
     # DataView
 )
 
@@ -31,6 +33,16 @@ urlpatterns = [
         name='vacancy_by_specialty'
     ),
     path(
+        'vacancies/<int:pk>',
+        VacancyView.as_view(),
+        name='vacancy_view'
+    ),
+    path(
+        'vacancies/create',
+        VacancyCreateView.as_view(),
+        name='vacancy_create_view'
+    ),
+    path(
         'company/create',
         CompanyCreateView.as_view(),
         name='company_create_view'
@@ -40,16 +52,6 @@ urlpatterns = [
         CompanyView.as_view(),
         name='company_view'
     ),
-    path(
-        'vacancies/<int:pk>',
-        VacancyView.as_view(),
-        name='vacancy_view'
-    ),
-    # path(
-    #     'vacancies/<int:pk>/send',
-    #     VacancySendView.as_view(),
-    #     name='vacancy_send_view'
-    # ),
     path(
         'mycompany',
         CompanyEditView.as_view(),
@@ -64,6 +66,11 @@ urlpatterns = [
         'mycompany/vacancies/<int:pk>',
         MyCompanyVacancyView.as_view(),
         name='vacancy_view_from_account'
+    ),
+    path(
+        'applications/<int:pk>',
+        ApplicationsView.as_view(),
+        name='applications_view'
     ),
 
 ]

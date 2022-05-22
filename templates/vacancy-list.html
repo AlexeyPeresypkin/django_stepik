@@ -17,7 +17,7 @@
                                             <p class="mb-1">
                                             <span class="mr-4">{{ vacancy.salary_min }} - {{ vacancy.salary_max }}
                                             </span>
-                                                <a href="#" class="text-info">
+                                                <a href="{% url 'vacancies:applications_view' vacancy.pk %}" class="text-info">
                                                     {{ vacancy.applications.count|default:'0' }}
                                                     откликов
                                                 </a>
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        <a href="{% url 'vacancies:company_create_view' %}"
+                        <a href="{% url 'vacancies:vacancy_create_view' %}"
                            class="btn btn-info mb-2 mt-4">
                             Создать вакансию
                         </a>

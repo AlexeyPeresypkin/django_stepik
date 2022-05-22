@@ -1,0 +1,102 @@
+{% load vacancies_extras %}
+{% if message %}
+    <p class="alert alert-info" role="alert">
+        Вакансия обновлена
+    </p>
+{% endif %}
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <p class="alert alert-danger"
+               role="alert">{{ error|escape }}</p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_title">
+                    Название вакансии
+                </label>
+                <input name="title"
+                       class="form-control" type="text"
+                        {% if form.is_bound %}
+                       value="{{ form.title.value }}"
+                        {% elif form.instance %}
+                       value="{{ form.instance.title }}"
+                        {% endif %}
+                       id="id_title">
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_specialty">
+                    Специализация
+                    {{ form.specialty|add_class:'custom-select mr-sm-2' }}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_salary_min">
+                    Зарплата от
+                </label>
+                <input name="salary_min"
+                       class="form-control" type="text"
+                        {% if form.is_bound %}
+                       value="{{ form.salary_min.value }}"
+                        {% elif form.instance.salary_min %}
+                       value="{{ form.instance.salary_min }}"
+                        {% endif %}
+                       id="id_salary_min">
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2"
+                       for="id_salary_max">
+                    Зарплата до
+                </label>
+                <input name="salary_max"
+                       class="form-control" type="text"
+                        {% if form.is_bound %}
+                       value="{{ form.salary_max.value }}"
+                        {% elif form.instance.salary_max %}
+                       value="{{ form.instance.salary_max }}"
+                        {% endif %}
+                       id="id_salary_max">
+            </div>
+        </div>
+    </div>
+    <div class="form-group pb-2">
+        <label class="mb-2 text-dark"
+               for="id_skills">
+            Требуемые навыки
+        </label>
+        <textarea name="skills" class="form-control"
+                  rows="3"
+                  id="id_skills"
+                  style="color:#000;">{% if form.is_bound %}{{ form.skills.value }}{% elif form.instance %}{{ form.instance.skills }}{% endif %}</textarea>
+    </div>
+    <div class="form-group pb-2">
+        <label class="mb-2 text-dark"
+               for="id_description">
+            Описание вакансии
+        </label>
+        <textarea name="description"
+                  class="form-control" rows="13"
+                  id="id_description"
+                  style="color:#000;">{% if form.is_bound %}{{ form.description.value }}{% elif form.instance %}{{ form.instance.description }}{% endif %}</textarea>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-info"
+               value="Сохранить">
+    </div>
+</form>
