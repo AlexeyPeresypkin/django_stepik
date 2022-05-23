@@ -13,6 +13,7 @@ from vacancies.views import (
     ApplicationsView,
     VacancyCreateView,
     about,
+    search,
 )
 
 urlpatterns = [
@@ -76,9 +77,10 @@ urlpatterns = [
         name='about'
     ),
     path(
-        'search?s=<query>',
-        about,
-        name='about'
+        # 'search?s=<query>',
+        'search',
+        search,
+        name='search'
     ),
 
 ]

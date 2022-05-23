@@ -3,7 +3,11 @@
     <div class="row mt-5">
         <div class="col-12 col-lg-2">
             <div class="pl-3 mb-5">
-                <p><a href="{% url 'vacancies:index' %}">Назад</a></p>
+                <button class="btn btn-primary w-100" type="submit"
+                        value="Previous Page"
+                        onClick="javascript:history.go(-1);">
+                    Назад
+                </button>
             </div>
         </div>
         <div class="col-12 col-lg-8">

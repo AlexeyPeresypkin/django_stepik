@@ -2,9 +2,15 @@
 {% load static %}
 
 {% block content %}
-    <div class="navbar mt-5">
-        <p><a href="{% url 'vacancies:index' %}">Назад</a></p>
-    </div>
+        <div class="col-12 col-lg-2">
+            <div class="pl-3 mb-5">
+                <button class="btn btn-primary w-100" type="submit"
+                        value="Previous Page"
+                        onClick="javascript:history.go(-1);">
+                    Назад
+                </button>
+            </div>
+        </div>
     <section>
         <div class="text-center">
             <img src="{{ company.logo.url }}" width="130" height="80" alt="">

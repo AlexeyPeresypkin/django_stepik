@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -198,6 +199,18 @@ class ApplicationsView(ListView):
 
 def about(request):
     return render(request, 'about.html', {'title': 'about'})
+
+
+def search(request):
+    q = request.GET.get('q')
+    if q:
+        vacancies = Vacancy.objects. \
+            filter(Q(title__icontains=q) | Q(description__icontains=q)). \
+            distinct(). \
+            select_related('company')
+        print(vacancies)
+        return render(request, 'search.html', {'vacancies': vacancies})
+    return render(request, 'search.html')
 
 
 def page_not_found(request, exception):
