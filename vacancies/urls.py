@@ -6,15 +6,13 @@ from vacancies.views import (
     VacancyListView,
     VacancyBySpecialtyListView,
     CompanyView,
-    # my_company_view,
     MyCompanyVacanciesView,
     MyCompanyVacancyView,
-    VacancySendView,
     CompanyCreateView,
     CompanyEditView,
     ApplicationsView,
     VacancyCreateView,
-    # DataView
+    about,
 )
 
 urlpatterns = [
@@ -71,6 +69,11 @@ urlpatterns = [
         'applications/<int:pk>',
         ApplicationsView.as_view(),
         name='applications_view'
+    ),
+    path(
+        'about',
+        about,
+        name='about'
     ),
 
 ]

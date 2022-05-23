@@ -10,7 +10,8 @@
                 {% else %}
                     {{ vacancies.first.specialty }}
                 {% endif %}
-            </strong></h1>
+            </strong>
+        </h1>
         <p class="text-center pt-1">{{ vacancies.count }} вакансий</p>
         <div class="row mt-5">
             <div class="col-12 col-lg-8 offset-lg-2 m-auto">
@@ -22,8 +23,10 @@
                                     <a href="{% url 'vacancies:vacancy_view' vacancy.pk %}"><h2 class="h2 pb-2">{{ vacancy.title }}</h2></a>
                                     <p class="mb-2">{{ vacancy.specialty }}
                                         <br> {{ vacancy.skills }}</p>
-                                    <p>От {{ vacancy.salary_min }}
-                                        до {{ vacancy.salary_max }} руб.</p>
+                                    <p>
+                                        От {{ vacancy.salary_min }}
+                                        до {{ vacancy.salary_max }} руб.
+                                    </p>
                                     <p class="text-muted pt-1">{{ vacancy.published_at }}</p>
                                 </div>
                                 <div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">

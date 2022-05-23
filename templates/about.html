@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-12 col-lg-2">
+            <div class="pl-3 mb-5">
+                <p><a href="{% url 'vacancies:index' %}">Назад</a></p>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8">
+            <section class="pl-3">
+                <div class="d-flex align-items-baseline align-content-baseline">
+                    <h1 class="h2 mt-4 font-weight-bold">О проекте</h1>
+                </div>
+                 <p class="mt-2">
+                     Связь с автором:
+                 </p>
+                <ul class="text-muted mb-4">
+                    <li>github <a href="https://github.com/AlexeyPeresypkin">https://github.com/AlexeyPeresypkin</a></li>
+                    <li>telegram <a href="https://t.me/Alex_Peresypkin">https://t.me/Alex_Peresypkin</a></li>
+                    <li>email: aepre@yandex.ru</li>
+                </ul>
+                <p class="mt-2">
+                    В проекте использовались следующие технологии:
+                </p>
+                <ul class="text-muted mb-4">
+                    <li>Python</li>
+                    <li>Django</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+{% endblock %}

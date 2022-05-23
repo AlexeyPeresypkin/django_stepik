@@ -1,11 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView
 
 from vacancies.forms import CompanyForm, ApplicationForm, VacancyForm
 from vacancies.models import Vacancy, Specialty, Company, Application
@@ -160,7 +158,6 @@ class MyCompanyVacancyView(LoginRequiredMixin, View):
         vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
         form = VacancyForm(instance=vacancy)
         applications = vacancy.applications
-        # print(form)
         return render(
             request,
             'vacancy-edit.html',
@@ -194,9 +191,13 @@ class ApplicationsView(ListView):
     context_object_name = 'applications'
 
     def get_queryset(self):
-        applications = Application.objects.\
+        applications = Application.objects. \
             filter(vacancy_id=self.kwargs.get('pk'))
         return applications
+
+
+def about(request):
+    return render(request, 'about.html', {'title': 'about'})
 
 
 def page_not_found(request, exception):

@@ -18,9 +18,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link
-                    {% if request.resolver_match.url_name == 'vacancies' %}
+                    {% if request.resolver_match.url_name == 'about' %}
                     active {% endif %}"
-                       href="{% url 'vacancies:vacancies' %}">О проекте
+                       href="{% url 'vacancies:about' %}">О проекте
                     </a>
                 </li>
             </ul>
