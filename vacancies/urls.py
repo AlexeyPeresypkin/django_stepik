@@ -75,5 +75,10 @@ urlpatterns = [
         about,
         name='about'
     ),
+    path(
+        'search?s=<query>',
+        about,
+        name='about'
+    ),
 
 ]

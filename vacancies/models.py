@@ -152,9 +152,76 @@ class Application(models.Model):
     def __str__(self):
         return self.written_username
 
-    # def get_absolute_url(self):
-    #     return reverse('vacancies:vacancy', kwargs={'pk': self.pk})
-
     class Meta:
         verbose_name = 'Отклик'
         verbose_name_plural = 'Отклики'
+
+
+class Resume(models.Model):
+    DONTLOOKINGFOR = 'DLF'
+    CONSIDERING = 'CSR'
+    LOOKINGFOR = 'LF'
+    STATUS_CHOICES = [
+        (DONTLOOKINGFOR, 'Не ищу работу'),
+        (CONSIDERING, 'Рассматриваю предложения'),
+        (LOOKINGFOR, 'Ищу работу')
+    ]
+    INTERN = 'IN'
+    JUNIOR = 'JN'
+    MIDDLE = 'MD'
+    SENIOR = 'SN'
+    LEAD = 'LD'
+    GRADE_CHOICES = [
+        (INTERN, 'Стажер'),
+        (JUNIOR, 'Джуниор'),
+        (MIDDLE, 'Миддл'),
+        (SENIOR, 'Синьор'),
+        (LEAD, 'Лид'),
+    ]
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='resume',
+        verbose_name='Пользователь'
+    )
+    name = models.CharField(
+        max_length=128,
+        verbose_name='Имя'
+    )
+    surname = models.CharField(
+        max_length=128,
+        verbose_name='Фамилия'
+    )
+    status = models.CharField(
+        max_length=3,
+        choices=STATUS_CHOICES,
+        default=LOOKINGFOR,
+        verbose_name='Готовность к работе'
+    )
+    salary = models.IntegerField(
+        verbose_name='Вознаграждение'
+    )
+    specialty = models.ForeignKey(
+        Specialty,
+        on_delete=models.CASCADE,
+        related_name='resume',
+        verbose_name='Специальность'
+    )
+    grade = models.CharField(
+        max_length=2,
+        choices=GRADE_CHOICES,
+        verbose_name='Квалификация'
+    )
+    education = models.CharField(
+        max_length=255,
+        verbose_name='Образование'
+    )
+    experience = models.CharField(
+        max_length=255,
+        verbose_name= 'Опыт работы'
+    )
+    portfolio = models.CharField(
+        max_length=128,
+        verbose_name='Портфолио'
+    )
+
