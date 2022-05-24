@@ -178,7 +178,7 @@ class Resume(models.Model):
         (SENIOR, 'Синьор'),
         (LEAD, 'Лид'),
     ]
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name='resume',
@@ -225,3 +225,9 @@ class Resume(models.Model):
         verbose_name='Портфолио'
     )
 
+    def __str__(self):
+        return f'{self.name} {self.surname}'
+
+    class Meta:
+        verbose_name = 'Резюме'
+        verbose_name_plural = 'Резюме'

@@ -14,6 +14,8 @@ from vacancies.views import (
     VacancyCreateView,
     about,
     search,
+    ResumeEditView,
+    ResumeCreateView
 )
 
 urlpatterns = [
@@ -77,10 +79,18 @@ urlpatterns = [
         name='about'
     ),
     path(
-        # 'search?s=<query>',
         'search',
         search,
         name='search'
     ),
-
+    path(
+        'resume',
+        ResumeEditView.as_view(),
+        name='resume_edit_view'
+    ),
+    path(
+        'resume/create',
+        ResumeCreateView.as_view(),
+        name='resume_create_view'
+    ),
 ]

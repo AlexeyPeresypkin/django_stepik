@@ -1,14 +1,9 @@
 {% load vacancies_extras %}
-{% if message %}
-    <p class="alert alert-info" role="alert">
-        Вакансия обновлена
-    </p>
-{% endif %}
 {% if form.errors %}
     {% for field in form %}
         {% for error in field.errors %}
             <p class="alert alert-danger"
-               role="alert">{{ error|escape }}</p>
+               role="alert">{{ field.label_tag }} {{ error|escape }}</p>
         {% endfor %}
     {% endfor %}
 {% endif %}

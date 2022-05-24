@@ -1,0 +1,118 @@
+{% load vacancies_extras %}
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <p class="alert alert-danger"
+               role="alert">{{ field.label_tag }} {{ error|escape }}</p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_name">Имя</label>
+                <input name="name" id="id_name" class="form-control"
+                       type="text"
+                        {% if form.is_bound %}
+                       value="{{ form.name.value }}"
+                        {% elif form.instance %}
+                       value="{{ form.instance.name }}"
+                        {% endif %}>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_surname">Фамилия</label>
+                <input name="surname" id="id_surname" class="form-control"
+                       type="text"
+                        {% if form.is_bound %}
+                       value="{{ form.surname.value }}"
+                        {% elif form.instance %}
+                       value="{{ form.instance.surname }}"
+                        {% endif %}>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="id_status">
+                    Готовность к работе
+                </label>
+                {{ form.status|add_class:'custom-select mr-sm-2' }}
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_salary">
+                    Ожидаемое вознаграждение
+                </label>
+                <input name="salary" id="id_salary" class="form-control"
+                       type="text"
+                        {% if form.is_bound %}
+                       value="{{ form.salary.value }}"
+                        {% elif form.instance %}
+                       value="{{ form.instance.salary }}"
+                        {% endif %}>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_specialty">
+                    Специализация
+                </label>
+                {{ form.specialty|add_class:'custom-select mr-sm-2' }}
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group pb-2">
+                <label class="mb-2 text-dark"
+                       for="id_grade">
+                    Квалификация
+                </label>
+                {{ form.grade|add_class:'custom-select mr-sm-2' }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group pb-2">
+        <label class="mb-2 text-dark" for="id_education">
+            Образование
+        </label>
+        <textarea name="education" class="form-control text-uppercase" rows="4"
+                  id="id_education" style="color:#000;">{% if form.is_bound %}{{ form.education.value }}{% elif form.instance %}{{ form.instance.education }}{% endif %}</textarea>
+    </div>
+    <div class="form-group pb-2">
+        <label class="mb-2 text-dark" for="id_experience">
+            Опыт работы
+        </label>
+        <textarea name="experience" class="form-control" rows="4"
+                  id="id_experience"
+                  style="color:#000;">{% if form.is_bound %}{{ form.experience.value }}{% elif form.instance %}{{ form.instance.experience }}{% endif %}</textarea>
+    </div>
+    <div class="form-group pb-3">
+        <label class="mb-2 text-dark" for="id_portfolio">
+            Ссылка на портфолио
+        </label>
+        <input name="portfolio" class="form-control" type="text"
+               {% if form.is_bound %}
+                   value="{{ form.portfolio.value }}"
+                    {% elif form.instance %}
+                   value="{{ form.instance.portfolio }}"
+               {% else %}
+                    placeholder="http://anylink.github.io"
+               {% endif %}
+               id="id_portfolio">
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-info"
+               value="Сохранить">
+    </div>
+</form>

@@ -7,7 +7,15 @@
                 <div class="card-body px-4 pb-4 tab-content">
                     <!-- Tab -->
                     <section>
-                        <h2 class="h4 pt-2 pb-3">{{ vacancy.specialty }} Middle/Senior</h2>
+                        <h2 class="h4 pt-2 pb-3">{{ vacancy.specialty }}
+                            Middle/Senior</h2>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class="alert alert-info" role="alert">
+                                    {{ message }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
                         {% include 'includes/vacancy_form.html' %}
                     </section>
                 </div>

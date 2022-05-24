@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from vacancies.models import Company, Application, Vacancy
+from vacancies.models import Company, Application, Vacancy, Resume
 
 
 class CompanyForm(ModelForm):
@@ -51,3 +51,18 @@ class VacancyForm(ModelForm):
             'salary_max',
         ]
 
+
+class ResumeForm(ModelForm):
+    class Meta:
+        model = Resume
+        fields = [
+            'name',
+            'surname',
+            'status',
+            'salary',
+            'specialty',
+            'grade',
+            'education',
+            'experience',
+            'portfolio',
+        ]

@@ -4,10 +4,11 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
-from vacancies.forms import CompanyForm, ApplicationForm, VacancyForm
-from vacancies.models import Vacancy, Specialty, Company, Application
+from vacancies.forms import CompanyForm, ApplicationForm, VacancyForm, \
+    ResumeForm
+from vacancies.models import Vacancy, Specialty, Company, Application, Resume
 
 
 class IndexView(ListView):
@@ -57,6 +58,26 @@ class VacancyCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('vacancies:my_company_vacancies_view')
 
 
+class VacancyView(View):
+
+    def get(self, request, *args, **kwargs):
+        vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
+        return render(request, 'vacancy.html', {'vacancy': vacancy})
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        vacancy = get_object_or_404(Vacancy, pk=pk)
+        user = self.request.user
+        form = ApplicationForm(request.POST, vacancy=vacancy, user=user)
+        if not user.is_authenticated:
+            messages.info(request, 'Необходимо войти чтобы отправить отклик')
+            return redirect('login')
+        if form.is_valid():
+            form.save()
+            return render(request, 'sent.html', {'vacancy': vacancy})
+        return render(request, 'vacancy.html', {'form': form})
+
+
 class CompanyView(DetailView):
     template_name = 'company.html'
     context_object_name = 'company'
@@ -82,32 +103,6 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('vacancies:my_company_view')
 
 
-class VacancyView(View):
-
-    def get(self, request, *args, **kwargs):
-        vacancy = get_object_or_404(Vacancy, pk=self.kwargs.get('pk'))
-        return render(request, 'vacancy.html', {'vacancy': vacancy})
-
-    def post(self, request, *args, **kwargs):
-        pk = self.kwargs.get('pk')
-        vacancy = get_object_or_404(Vacancy, pk=pk)
-        user = self.request.user
-        form = ApplicationForm(request.POST, vacancy=vacancy, user=user)
-        if not user.is_authenticated:
-            messages.info(request, 'Необходимо войти чтобы отправить отклик')
-            return redirect('login')
-        if form.is_valid():
-            form.save()
-            return render(request, 'sent.html', {'vacancy': vacancy})
-        return render(request, 'vacancy.html', {'form': form})
-
-
-class VacancySendView(DetailView):
-    model = Vacancy
-    template_name = 'sent.html'
-    context_object_name = 'vacancy'
-
-
 class CompanyEditView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -131,14 +126,12 @@ class CompanyEditView(LoginRequiredMixin, View):
         )
         if form.is_valid():
             form.save()
+            messages.info(request, 'Компания обновлена')
+            return redirect('vacancies:my_company_view')
         return render(
             request,
             'company-edit.html',
-            {
-                'form': form,
-                'message': 'Информация о компании обновлена',
-                'company': company,
-            }
+            {'form': form, 'company': company}
         )
 
 
@@ -162,11 +155,9 @@ class MyCompanyVacancyView(LoginRequiredMixin, View):
         return render(
             request,
             'vacancy-edit.html',
-            {
-                'form': form,
-                'applications': applications,
-                'vacancy': vacancy
-            }
+            {'form': form,
+             'applications': applications,
+             'vacancy': vacancy}
         )
 
     def post(self, request, *args, **kwargs):
@@ -176,14 +167,9 @@ class MyCompanyVacancyView(LoginRequiredMixin, View):
         form = VacancyForm(request.POST or None, instance=vacancy)
         if form.is_valid():
             form.save()
-        return render(
-            request,
-            'vacancy-edit.html',
-            {
-                'form': form,
-                'message': 'Вакансия обновлена'
-            }
-        )
+            messages.info(request, 'Вакансия обновлена')
+            return redirect('vacancies:my_company_view')
+        return render(request, 'vacancy-edit.html', {'form': form})
 
 
 class ApplicationsView(ListView):
@@ -197,6 +183,46 @@ class ApplicationsView(ListView):
         return applications
 
 
+class ResumeCreateView(LoginRequiredMixin, CreateView):
+    model = Resume
+    template_name = 'resume-create.html'
+    form_class = ResumeForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('vacancies:resume_edit_view')
+
+
+class ResumeEditView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        resume = Resume.objects.filter(user=request.user).first()
+        if resume:
+            form = ResumeForm(instance=resume)
+        else:
+            form = ResumeForm()
+        return render(
+            request,
+            'resume-edit.html',
+            {'form': form, 'resume': resume}
+        )
+
+    def post(self, request, *args, **kwargs):
+        resume = Resume.objects.filter(user=request.user).first()
+        form = ResumeForm(request.POST or None, instance=resume)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Резюме обновлено')
+            return redirect('vacancies:resume_edit_view')
+        return render(request,
+                      'resume-edit.html',
+                      {'form': form,
+                       'resume': resume})
+
+
 def about(request):
     return render(request, 'about.html', {'title': 'about'})
 
@@ -208,7 +234,6 @@ def search(request):
             filter(Q(title__icontains=q) | Q(description__icontains=q)). \
             distinct(). \
             select_related('company')
-        print(vacancies)
         return render(request, 'search.html', {'vacancies': vacancies})
     return render(request, 'search.html')
 
