@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView
 
 from vacancies.forms import CompanyForm, ApplicationForm, VacancyForm, \
     ResumeForm
