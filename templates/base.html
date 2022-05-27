@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <title>{{ title|default:'Джуманджки' }}</title>
@@ -17,15 +15,11 @@
     }
   </style>
 </head>
-
 <body>
-
 {% include 'includes/header.html' %}
-
 <main class="container mt-3 pb-5">
     {% block content %} {% endblock %}
 </main>
-
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

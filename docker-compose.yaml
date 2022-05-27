@@ -25,12 +25,6 @@ services:
     volumes:
       - static_value:/code/static/
       - media_value:/code/media/
-#    command: >
-#      sh -c "
-#      python manage.py makemigrations --noinput
-#      && python manage.py migrate --noinput
-#      && python manage.py collectstatic --noinput"
-#      && gunicorn src.wsgi:application --bind 0.0.0.0:8000"
     depends_on:
       - db
     env_file:

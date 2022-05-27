@@ -74,9 +74,10 @@
                                  src="{{ company.logo.url }}" alt="">
                         </a>
                         <div class="card-body">
-                            <p class="card-text"><a
-                                    href="{% url 'vacancies:company_view' company.pk %}">{{ company.vacancies.count }}
-                                вакансий</a>
+                            <p class="card-text">
+                                <a href="{% url 'vacancies:company_view' company.pk %}">
+                                    {{ company.vacancies.count }} вакансий
+                                </a>
                             </p>
                         </div>
                     </div>
